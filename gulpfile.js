@@ -132,6 +132,17 @@ gulp.task('dist', [ 'build' ], callback => {
     gulp.src(path.join(tmp.path, '**')),
     assetFilter,
     rev(),
+    through.obj((file, encoding, next) => {
+      // Format the new filename
+      if (file.revHash) {
+        const filePath = path.parse(file.revOrigPath)
+        filePath.name = filePath.name.concat(`.${file.revHash}`)
+        delete filePath.base
+        file.path = path.format(filePath)
+      }
+
+      next(null, file)
+    }),
     assetFilter.restore,
     revReplace(),
     gulp.dest(dist.path),
