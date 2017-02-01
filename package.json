@@ -28,7 +28,8 @@
     "clean": "gulp clean",
     "dist": "gulp clean && gulp dist",
     "lint": "stylelint 'src/css/**/*.scss' && standard 'src/js/**/*.js'",
-    "lint:fix": "stylefmt --recursive 'src/css/**/*.scss' && prettier --write 'src/js/**/*.js' && standard --fix 'src/js/**/*.js'"
+    "lint:fix": "stylefmt --recursive 'src/css/**/*.scss' && prettier --write 'src/js/**/*.js' && standard --fix 'src/js/**/*.js'",
+    "precommit": "npm run-script lint"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
@@ -47,6 +48,7 @@
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.4.0",
     "gulp-uglify": "^2.0.1",
+    "husky": "^0.13.1",
     "prettier": "^0.11.0",
     "pump": "^1.0.2",
     "standard": "^8.6.0",
