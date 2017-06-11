@@ -1,0 +1,63 @@
+{
+  "name": "static-site-template",
+  "version": "0.0.1",
+  "description": "A project template for creating static websites",
+  "stylelint": {
+    "extends": [
+      "stylelint-config-standard",
+      "stylelint-config-concentric-order"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  },
+  "lint-staged": {
+    "*.scss": [
+      "stylefmt",
+      "stylelint",
+      "git add"
+    ],
+    "*.js": [
+      "prettier-eslint --write",
+      "eslint",
+      "git add"
+    ]
+  },
+  "author": "Alvin Chan <no@email.com>",
+  "license": "MIT",
+  "dependencies": {
+    "babel-preset-env": "^1.5.2",
+    "browser-sync": "^2.18.12",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-pug": "^3.3.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "pump": "^1.0.2"
+  },
+  "devDependencies": {
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.3.0",
+    "eslint-plugin-node": "^5.0.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "husky": "^0.13.4",
+    "lint-staged": "^3.6.0",
+    "prettier-eslint-cli": "^4.0.4",
+    "stylefmt": "^6.0.0",
+    "stylelint": "^7.10.1",
+    "stylelint-config-concentric-order": "^2.0.1",
+    "stylelint-config-standard": "^16.0.0"
+  },
+  "scripts": {
+    "start": "gulp watch",
+    "dist": "NODE_ENV=production gulp",
+    "clean": "gulp clean",
+    "precommit": "lint-staged"
+  }
+}
