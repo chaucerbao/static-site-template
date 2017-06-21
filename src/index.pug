@@ -1,8 +1,8 @@
-extends _lib/layout/template
+extends /_lib/layout/template
+include /_lib/icon/template
 
 block body
   h1 Homepage
   p Welcome home
 
-  svg
-    use(href='/icon/symbol.svg#happy')
+  +icon('happy')
