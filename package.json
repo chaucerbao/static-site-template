@@ -25,7 +25,9 @@
   },
   "author": "Alvin Chan <no@email.com>",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "normalize.css": "^7.0.0"
+  },
   "devDependencies": {
     "babel-preset-env": "^1.5.2",
     "browser-sync": "^2.18.12",

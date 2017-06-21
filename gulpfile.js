@@ -41,7 +41,7 @@ gulp.task('css', callback => {
     gulp.src(path.join(src, '**', '*.scss')),
     isProduction ? gutil.noop() : sourcemaps.init(),
     concat(path.join('css', 'style.css')),
-    sass({ includePaths: [src] }),
+    sass({ includePaths: [src, 'node_modules'] }),
     cssnano({ autoprefixer: { add: true } }),
     isProduction ? gutil.noop() : sourcemaps.write(),
     gulp.dest(dest),
