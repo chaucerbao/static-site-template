@@ -38,7 +38,10 @@ gulp.task('html', callback => {
 // Build CSS
 gulp.task('css', callback => {
   pump(
-    gulp.src(path.join(src, '**', '*.scss')),
+    gulp.src([
+      path.join(src, 'css', '**', '*.scss'),
+      path.join(src, '_lib', '**', '*.scss')
+    ]),
     isProduction ? gutil.noop() : sourcemaps.init(),
     concat(path.join('css', 'style.css')),
     sass({ includePaths: [src, 'node_modules'] }),
@@ -53,7 +56,10 @@ gulp.task('css', callback => {
 // Build Javascript
 gulp.task('js', callback => {
   pump(
-    gulp.src(path.join(src, '**', '*.js')),
+    gulp.src([
+      path.join(src, 'js', '**', '*.js'),
+      path.join(src, '_lib', '**', '*.js')
+    ]),
     isProduction ? gutil.noop() : sourcemaps.init(),
     concat(path.join('js', 'script.js')),
     babel({ presets: ['env'] }),
