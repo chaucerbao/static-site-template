@@ -62,7 +62,7 @@ gulp.task('js', callback => {
     ]),
     isProduction ? gutil.noop() : sourcemaps.init(),
     concat(path.join('js', 'script.js')),
-    babel({ presets: ['env'] }),
+    babel({ presets: [['env', { modules: false }]] }),
     uglify(),
     isProduction ? gutil.noop() : sourcemaps.write(),
     gulp.dest(dest),
