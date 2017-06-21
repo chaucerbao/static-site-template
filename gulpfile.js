@@ -40,7 +40,7 @@ gulp.task('css', callback => {
   pump(
     gulp.src(path.join(src, '**', '*.scss')),
     isProduction ? gutil.noop() : sourcemaps.init(),
-    concat('style.css'),
+    concat(path.join('css', 'style.css')),
     sass({ includePaths: [src] }),
     cssnano({ autoprefixer: { add: true } }),
     isProduction ? gutil.noop() : sourcemaps.write(),
@@ -55,7 +55,7 @@ gulp.task('js', callback => {
   pump(
     gulp.src(path.join(src, '**', '*.js')),
     isProduction ? gutil.noop() : sourcemaps.init(),
-    concat('script.js'),
+    concat(path.join('js', 'script.js')),
     babel({ presets: ['env'] }),
     uglify(),
     isProduction ? gutil.noop() : sourcemaps.write(),
@@ -72,8 +72,8 @@ gulp.task('icon', callback => {
     svgSprite({
       mode: {
         symbol: {
-          dest: '.',
-          sprite: 'icons.symbol.svg'
+          dest: 'icon',
+          sprite: 'symbol.svg'
         }
       }
     }),
