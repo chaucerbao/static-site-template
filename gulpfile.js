@@ -11,6 +11,7 @@ const sass = require('gulp-sass')
 const cssnano = require('gulp-cssnano')
 const babel = require('gulp-babel')
 const uglify = require('gulp-uglify')
+const svgSprite = require('gulp-svg-sprite')
 const browserSync = require('browser-sync').create()
 
 // File paths
@@ -64,11 +65,29 @@ gulp.task('js', callback => {
   )
 })
 
+// Build Icons
+gulp.task('icon', callback => {
+  pump(
+    gulp.src(path.join(src, 'icons', '**', '*.svg')),
+    svgSprite({
+      mode: {
+        symbol: {
+          dest: '.',
+          sprite: 'icons.symbol.svg'
+        }
+      }
+    }),
+    gulp.dest(dest),
+    callback
+  )
+})
+
 // Development
 gulp.task('watch', ['default'], () => {
   gulp.watch(path.join(src, '**', '*.pug'), ['html'])
   gulp.watch(path.join(src, '**', '*.scss'), ['css'])
   gulp.watch(path.join(src, '**', '*.js'), ['js'])
+  gulp.watch(path.join(src, 'icons', '**', '*.svg'), ['icon'])
 
   browserSync.init({
     server: dest,
@@ -80,4 +99,4 @@ gulp.task('watch', ['default'], () => {
 gulp.task('clean', () => del(dest))
 
 // Build
-gulp.task('default', ['html', 'css', 'js'])
+gulp.task('default', ['html', 'css', 'js', 'icon'])
