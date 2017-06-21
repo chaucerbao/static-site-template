@@ -68,7 +68,7 @@ gulp.task('js', callback => {
 // Build Icons
 gulp.task('icon', callback => {
   pump(
-    gulp.src(path.join(src, 'icons', '**', '*.svg')),
+    gulp.src(path.join(src, 'icon', '**', '*.svg')),
     svgSprite({
       mode: {
         symbol: {
@@ -87,7 +87,7 @@ gulp.task('watch', ['default'], () => {
   gulp.watch(path.join(src, '**', '*.pug'), ['html'])
   gulp.watch(path.join(src, '**', '*.scss'), ['css'])
   gulp.watch(path.join(src, '**', '*.js'), ['js'])
-  gulp.watch(path.join(src, 'icons', '**', '*.svg'), ['icon'])
+  gulp.watch(path.join(src, 'icon', '**', '*.svg'), ['icon'])
 
   browserSync.init({
     server: dest,
