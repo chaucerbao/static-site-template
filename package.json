@@ -13,7 +13,7 @@
   },
   "lint-staged": {
     "*.scss": [
-      "stylefmt",
+      "stylefmt --recursive",
       "stylelint",
       "git add"
     ],
