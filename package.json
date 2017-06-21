@@ -59,7 +59,7 @@
   },
   "scripts": {
     "start": "gulp watch",
-    "dist": "NODE_ENV=production gulp",
+    "dist": "gulp clean && NODE_ENV=production gulp",
     "clean": "gulp clean",
     "precommit": "lint-staged"
   }
