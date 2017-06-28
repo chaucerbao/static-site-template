@@ -3,7 +3,6 @@ const path = require('path')
 const gulp = require('gulp')
 const pump = require('pump')
 const del = require('del')
-const rename = require('gulp-rename')
 const sourcemaps = require('gulp-sourcemaps')
 const gutil = require('gulp-util')
 const pug = require('gulp-pug')
@@ -40,9 +39,8 @@ gulp.task('html', callback => {
 // Build CSS
 gulp.task('css', callback => {
   pump(
-    gulp.src(path.join(src, 'css', 'index.scss')),
+    gulp.src(path.join(src, 'css', 'style.scss')),
     isProduction ? gutil.noop() : sourcemaps.init(),
-    rename('style.css'),
     sass({ includePaths: [src, 'node_modules'] }),
     cssnano({ autoprefixer: { add: true } }),
     isProduction ? gutil.noop() : sourcemaps.write(),
@@ -55,7 +53,7 @@ gulp.task('css', callback => {
 // Build Javascript
 gulp.task('js', callback => {
   pump(
-    browserify(path.join(src, 'js', 'index.js'), {
+    browserify(path.join(src, 'js', 'script.js'), {
       debug: !isProduction
     }).bundle(),
     source('script.js'),
@@ -76,12 +74,12 @@ gulp.task('icon', callback => {
     svgSprite({
       mode: {
         symbol: {
-          dest: 'icon',
+          dest: '',
           sprite: 'symbol.svg'
         }
       }
     }),
-    gulp.dest(dest),
+    gulp.dest(path.join(dest, 'icon')),
     callback
   )
 })
@@ -91,7 +89,7 @@ gulp.task('watch', ['default'], () => {
   gulp.watch(path.join(src, '**', '*.pug'), ['html'])
   gulp.watch(path.join(src, '**', '*.scss'), ['css'])
   gulp.watch(path.join(src, '**', '*.js'), ['js'])
-  gulp.watch(path.join(src, 'icon', '**', '*.svg'), ['icon'])
+  gulp.watch(path.join(src, '**', '*.svg'), ['icon'])
 
   browserSync.init({
     server: dest,
