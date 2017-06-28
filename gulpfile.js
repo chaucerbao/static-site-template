@@ -3,13 +3,15 @@ const path = require('path')
 const gulp = require('gulp')
 const pump = require('pump')
 const del = require('del')
-const concat = require('gulp-concat')
+const rename = require('gulp-rename')
 const sourcemaps = require('gulp-sourcemaps')
 const gutil = require('gulp-util')
 const pug = require('gulp-pug')
 const sass = require('gulp-sass')
 const cssnano = require('gulp-cssnano')
-const babel = require('gulp-babel')
+const browserify = require('browserify')
+const source = require('vinyl-source-stream')
+const buffer = require('vinyl-buffer')
 const uglify = require('gulp-uglify')
 const svgSprite = require('gulp-svg-sprite')
 const browserSync = require('browser-sync').create()
@@ -38,16 +40,13 @@ gulp.task('html', callback => {
 // Build CSS
 gulp.task('css', callback => {
   pump(
-    gulp.src([
-      path.join(src, 'css', '**', '*.scss'),
-      path.join(src, '_lib', '**', '*.scss')
-    ]),
+    gulp.src(path.join(src, 'css', 'index.scss')),
     isProduction ? gutil.noop() : sourcemaps.init(),
-    concat(path.join('css', 'style.css')),
+    rename('style.css'),
     sass({ includePaths: [src, 'node_modules'] }),
     cssnano({ autoprefixer: { add: true } }),
     isProduction ? gutil.noop() : sourcemaps.write(),
-    gulp.dest(dest),
+    gulp.dest(path.join(dest, 'css')),
     isProduction ? gutil.noop() : browserSync.stream(),
     callback
   )
@@ -56,16 +55,15 @@ gulp.task('css', callback => {
 // Build Javascript
 gulp.task('js', callback => {
   pump(
-    gulp.src([
-      path.join(src, 'js', '**', '*.js'),
-      path.join(src, '_lib', '**', '*.js')
-    ]),
-    isProduction ? gutil.noop() : sourcemaps.init(),
-    concat(path.join('js', 'script.js')),
-    babel({ presets: [['env', { modules: false }]] }),
+    browserify(path.join(src, 'js', 'index.js'), {
+      debug: !isProduction
+    }).bundle(),
+    source('script.js'),
+    buffer(),
+    isProduction ? gutil.noop() : sourcemaps.init({ loadMaps: true }),
     uglify(),
     isProduction ? gutil.noop() : sourcemaps.write(),
-    gulp.dest(dest),
+    gulp.dest(path.join(dest, 'js')),
     isProduction ? gutil.noop() : browserSync.stream(),
     callback
   )
