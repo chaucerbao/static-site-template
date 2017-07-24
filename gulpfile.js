@@ -13,6 +13,7 @@ const source = require('vinyl-source-stream')
 const buffer = require('vinyl-buffer')
 const uglify = require('gulp-uglify')
 const svgSprite = require('gulp-svg-sprite')
+const critical = require('critical').stream
 const browserSync = require('browser-sync').create()
 
 // File paths
@@ -99,6 +100,20 @@ gulp.task('watch', ['default'], () => {
 
 // Clean up
 gulp.task('clean', () => del(dest))
+
+// Extract critical CSS into the HTML
+gulp.task('critical', ['html', 'css'], callback => {
+  pump(
+    gulp.src(path.join(dest, '**', '*.html')),
+    critical({
+      base: dest,
+      inline: true,
+      minify: true
+    }),
+    gulp.dest(dest),
+    callback
+  )
+})
 
 // Build
 gulp.task('default', ['html', 'css', 'js', 'icon'])
