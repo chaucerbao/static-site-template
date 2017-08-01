@@ -13,16 +13,6 @@
   "eslintConfig": {
     "extends": "standard"
   },
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
-  },
-  "babel": {
-    "presets": [
-      "env"
-    ]
-  },
   "lint-staged": {
     "*.scss": [
       "stylefmt --recursive",
@@ -39,10 +29,7 @@
     "normalize.css": "^7.0.0"
   },
   "devDependencies": {
-    "babel-preset-env": "^1.5.2",
-    "babelify": "^7.3.0",
     "browser-sync": "^2.18.12",
-    "browserify": "^14.4.0",
     "critical": "^0.9.0",
     "del": "^3.0.0",
     "eslint": "^4.1.1",
@@ -57,7 +44,6 @@
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-svg-sprite": "^1.3.7",
-    "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
     "husky": "^0.14.1",
     "lint-staged": "^4.0.0",
@@ -67,8 +53,9 @@
     "stylelint": "^7.12.0",
     "stylelint-config-concentric-order": "^2.0.1",
     "stylelint-config-standard": "^16.0.0",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "ts-loader": "^2.3.2",
+    "typescript": "^2.4.2",
+    "webpack": "^3.4.1"
   },
   "scripts": {
     "start": "gulp watch",

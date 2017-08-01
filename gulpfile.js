@@ -8,10 +8,7 @@ const gutil = require('gulp-util')
 const pug = require('gulp-pug')
 const sass = require('gulp-sass')
 const cssnano = require('gulp-cssnano')
-const browserify = require('browserify')
-const source = require('vinyl-source-stream')
-const buffer = require('vinyl-buffer')
-const uglify = require('gulp-uglify')
+const webpack = require('webpack')
 const svgSprite = require('gulp-svg-sprite')
 const critical = require('critical').stream
 const browserSync = require('browser-sync').create()
@@ -53,18 +50,36 @@ gulp.task('css', callback => {
 
 // Build Javascript
 gulp.task('js', callback => {
-  pump(
-    browserify(path.join(src, 'js', 'script.js'), {
-      debug: !isProduction
-    }).bundle(),
-    source('script.js'),
-    buffer(),
-    isProduction ? gutil.noop() : sourcemaps.init({ loadMaps: true }),
-    uglify(),
-    isProduction ? gutil.noop() : sourcemaps.write(),
-    gulp.dest(path.join(dest, 'js')),
-    isProduction ? gutil.noop() : browserSync.stream(),
-    callback
+  webpack(
+    {
+      entry: path.resolve(src, 'js', 'index.ts'),
+      output: {
+        filename: 'script.js',
+        path: path.resolve(dest, 'js')
+      },
+      module: {
+        rules: [
+          {
+            test: /\.ts$/,
+            use: 'ts-loader'
+          }
+        ]
+      },
+      plugins: [new webpack.optimize.UglifyJsPlugin()],
+      devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map'
+    },
+    (err, stats) => {
+      if (err) {
+        throw new gutil.PluginError('Webpack', err)
+      }
+
+      if (stats.hasErrors()) {
+        gutil.log('[Webpack]', stats.toString('minimal'))
+      }
+
+      browserSync.reload(path.join(dest, 'js', 'script.js'))
+      callback()
+    }
   )
 })
 
@@ -89,7 +104,7 @@ gulp.task('icon', callback => {
 gulp.task('watch', ['default'], () => {
   gulp.watch(path.join(src, '**', '*.pug'), ['html'])
   gulp.watch(path.join(src, '**', '*.scss'), ['css'])
-  gulp.watch(path.join(src, '**', '*.js'), ['js'])
+  gulp.watch(path.join(src, '**', '*.ts'), ['js'])
   gulp.watch(path.join(src, '**', '*.svg'), ['icon'])
 
   browserSync.init({
